@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fast.succour.mapper.StationMapper">
+
+    <resultMap type="Station" id="StationResult">
+        <result property="stationId"    column="station_id"    />
+        <result property="name"    column="name"    />
+        <result property="status"    column="status"    />
+        <result property="logo"    column="logo"    />
+        <result property="contactPerson"    column="contact_person"    />
+        <result property="phone"    column="phone"    />
+        <result property="email"    column="email"    />
+        <result property="address"    column="address"    />
+        <result property="description"    column="description"    />
+        <result property="businessLicense"    column="business_license"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="userName"    column="user_name"    />
+    </resultMap>
+
+    <select id="selectStationList" parameterType="Station" resultMap="StationResult">
+        select s.station_id, s.status, s.name, s.logo, s.contact_person, s.phone, s.email, s.address,
+               s.description, s.business_license, s.id_card, s.user_id, s.create_time,
+               u.user_name
+        from station s
+        left join sys_user u on s.user_id = u.user_id
+        <where>
+            <if test="name != null  and name != ''">
+                and s.name like concat('%', #{name}, '%')
+            </if>
+            <if test="contactPerson != null  and contactPerson != ''">
+                and s.contact_person like concat('%', #{contactPerson}, '%')
+            </if>
+            <if test="userId != null "> and s.user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''">
+                and u.user_name like concat('%', #{userName}, '%')
+            </if>
+        </where>
+        order by s.create_time desc
+    </select>
+
+    <select id="selectStationByStationId" parameterType="String" resultMap="StationResult">
+        select station_id, status, name, logo, contact_person, phone, email, address, description, business_license, id_card, user_id, create_time from station
+        where station_id = #{stationId}
+    </select>
+
+    <insert id="insertStation" parameterType="Station">
+        insert into station
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stationId != null and stationId != ''">station_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="logo != null and logo != ''">logo,</if>
+            <if test="contactPerson != null and contactPerson != ''">contact_person,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="email != null and email != ''">email,</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="businessLicense != null and businessLicense != ''">business_license,</if>
+            <if test="idCard != null and idCard != ''">id_card,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stationId != null and stationId != ''">#{stationId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="logo != null and logo != ''">#{logo},</if>
+            <if test="contactPerson != null and contactPerson != ''">#{contactPerson},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="email != null and email != ''">#{email},</if>
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="businessLicense != null and businessLicense != ''">#{businessLicense},</if>
+            <if test="idCard != null and idCard != ''">#{idCard},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateStation" parameterType="Station">
+        update station
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="logo != null and logo != ''">logo = #{logo},</if>
+            <if test="contactPerson != null and contactPerson != ''">contact_person = #{contactPerson},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="email != null and email != ''">email = #{email},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="businessLicense != null and businessLicense != ''">business_license = #{businessLicense},</if>
+            <if test="idCard != null and idCard != ''">id_card = #{idCard},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where station_id = #{stationId}
+    </update>
+
+    <!--用户和角色关联表中根据用户ID修改角色ID-->
+    <update id="updateUserRoleByUserId">
+        UPDATE sys_user_role
+        SET role_id = 102
+        WHERE user_id = #{userId}
+    </update>
+
+    <delete id="deleteStationByStationIds" parameterType="String">
+        delete from station where station_id in
+        <foreach item="stationId" collection="array" open="(" separator="," close=")">
+            #{stationId}
+        </foreach>
+    </delete>
+
+    <!--查询当前用户是否已经提交救助站认证-->
+    <select id="selectIsAuth" resultType="java.lang.Boolean">
+        select count(station_id)
+        from station
+        where user_id = #{userId}
+    </select>
+
+    <!--根据用户ID查询救助站ID-->
+    <select id="selectStationIdByUserId" resultType="java.lang.String">
+        select station_id
+        from station
+        where user_id = #{userId}
+    </select>
+
+    <!--查询状态为审核通过的救助站-->
+    <select id="selectStationListByIsAuth" resultMap="StationResult">
+        select s.station_id, s.status, s.name, s.logo, s.contact_person, s.phone, s.email, s.address,
+               s.description, s.business_license, s.id_card, s.user_id, s.create_time
+        from station s
+        where status = '审核通过'
+    </select>
+
+</mapper>

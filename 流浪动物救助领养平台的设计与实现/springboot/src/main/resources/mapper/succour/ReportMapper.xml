@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fast.succour.mapper.ReportMapper">
+
+    <resultMap type="Report" id="ReportResult">
+        <result property="reportId"    column="report_id"    />
+        <result property="name"    column="name"    />
+        <result property="phone"    column="phone"    />
+        <result property="address"    column="address"    />
+        <result property="situation"    column="situation"    />
+        <result property="image"    column="image"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <select id="selectReportList" parameterType="Report" resultMap="ReportResult">
+        select report_id, name, phone, address, situation, image, create_time from report
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectReportByReportId" parameterType="String" resultMap="ReportResult">
+        select report_id, name, phone, address, situation, image, create_time from report
+        where report_id = #{reportId}
+    </select>
+
+    <insert id="insertReport" parameterType="Report">
+        insert into report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportId != null and reportId != ''">report_id,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="phone != null and phone != ''">phone,</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="situation != null and situation != ''">situation,</if>
+            <if test="image != null">image,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportId != null and reportId != ''">#{reportId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="phone != null and phone != ''">#{phone},</if>
+            <if test="address != null and address != ''">#{address},</if>
+            <if test="situation != null and situation != ''">#{situation},</if>
+            <if test="image != null">#{image},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateReport" parameterType="Report">
+        update report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="phone != null and phone != ''">phone = #{phone},</if>
+            <if test="address != null and address != ''">address = #{address},</if>
+            <if test="situation != null and situation != ''">situation = #{situation},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where report_id = #{reportId}
+    </update>
+
+    <delete id="deleteReportByReportIds" parameterType="String">
+        delete from report where report_id in
+        <foreach item="reportId" collection="array" open="(" separator="," close=")">
+            #{reportId}
+        </foreach>
+    </delete>
+</mapper>
