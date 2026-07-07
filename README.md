@@ -13,5 +13,8 @@
 -领养申请提交与审批
 -管理员后台（用户管理、数据统计）
 
-##动物列表页
+##动物列表页面
 <img width="945" height="500" alt="image" src="https://github.com/user-attachments/assets/823d64fa-f00b-4149-8d27-85a64f983cbf" />
+
+##领养申请提交与审批页面
+![Uploading image.png…]()
