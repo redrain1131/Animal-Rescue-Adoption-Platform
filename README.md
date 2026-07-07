@@ -26,12 +26,20 @@
 ## 快速开始
 
 ### 1.克隆项目
-```bash
 git clone https://github.com/redrain1131/Animal-Rescue-Adoption-Platform.git
 cd Animal-Rescue-Adoption-Platform
-```
-### 2.创建您的数据库，名为animal_succour，将animal-succour.sql文件导入
 
-### 3.修改 application.yml 中的数据库配置（用户名、密码），并使用“mvn spring-boot:run”启动后端
+### 2. 初始化数据库
+- 创建MySQL数据库，名称：`animal_succour`
+- 导入项目根目录下的 `animal-succour.sql` 文件
 
-### 4.使用“npm run dev”启动前端
+### 3. 启动后端
+
+cd springboot
+# 修改 application.yml 中的数据库配置（用户名、密码）
+mvn spring-boot:run
+
+### 4. 启动前端
+cd vue
+npm install
+npm run dev
