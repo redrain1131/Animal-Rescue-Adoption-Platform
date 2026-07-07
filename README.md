@@ -35,4 +35,3 @@ cd Animal-Rescue-Adoption-Platform
 ### 3.修改 application.yml 中的数据库配置（用户名、密码），并使用“mvn spring-boot:run”启动后端
 
 ### 4.使用“npm run dev”启动前端
-
