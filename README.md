@@ -12,6 +12,15 @@
 -动物信息的增删改查（支持图片自行上传）
 -领养申请提交与审批
 -管理员后台（用户管理、数据统计）
+--救助站的审核
 
 ##动物列表页面
-![Uploading 12cff2b0a426b9a3df7e3798cb79e2a0.png…]()
+<img width="945" height="500" alt="12cff2b0a426b9a3df7e3798cb79e2a0" src="https://github.com/user-attachments/assets/f8587ad7-bd5c-4f9f-893b-cd6c93d7fa8a" />
+
+##领养申请与审批页面
+<img width="945" height="401" alt="e956d4b735b2383ff76614291a1d6653" src="https://github.com/user-attachments/assets/91b8411e-563b-43d6-b3e0-4ee98a71d818" />
+
+##救助站审核页面
+<img width="945" height="536" alt="image" src="https://github.com/user-attachments/assets/95f68347-3249-4b97-9efb-66028627f8da" />
+
+
