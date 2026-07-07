@@ -36,7 +36,7 @@ cd Animal-Rescue-Adoption-Platform
 ### 3. 启动后端
 
 cd springboot
-# 修改 application.yml 中的数据库配置（用户名、密码）
+修改 application.yml 中的数据库配置（用户名、密码）
 mvn spring-boot:run
 
 ### 4. 启动前端
